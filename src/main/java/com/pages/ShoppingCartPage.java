@@ -26,20 +26,22 @@ public class ShoppingCartPage {
         this.driver= driver;
         PageFactory.initElements(driver,this);
     }
-    public void verifyProductPrice(){
+    public void verifyProductPrice(String productName){
         String temp_actualPrice = productPrice.getText();
         final_ActualPrice =String.valueOf(new BigDecimal(temp_actualPrice.trim().replaceAll("(?<=\\d),(?=\\d)","")).intValue()) ;
         configReader = new ConfigReader();
         prop = configReader.init_prop();
-        String  expectedPrice = prop.getProperty("Monitor");
-
+        String  expectedPrice = prop.getProperty(productName);
         Assert.assertEquals(expectedPrice,final_ActualPrice);
 
     }
-    public void verifySubTotalPrice(){
-        String actualPrice = subTotalPrice.getText();
-        String  expectedPrice = prop.getProperty("Monitor");
+    public void verifySubTotalPrice(String productName){
+        String temp_actualPrice = subTotalPrice.getText();
+        final_ActualPrice =String.valueOf(new BigDecimal(temp_actualPrice.trim().replaceAll("(?<=\\d),(?=\\d)","")).intValue()) ;
+        String  expectedPrice = prop.getProperty(productName);
         Assert.assertEquals(expectedPrice,final_ActualPrice);
+        System.out.println("inside subtotoal"+expectedPrice);
+        System.out.println("inside subtotoal"+final_ActualPrice);
 
     }
 }

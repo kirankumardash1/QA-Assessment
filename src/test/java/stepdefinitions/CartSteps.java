@@ -18,6 +18,7 @@ public class CartSteps {
     SearchResultPage searchResultPage;
     ProductDetailsPage productDetailsPage;
     ShoppingCartPage shoppingCartPage;
+    String searchItem;
 
     @Given("I navigate to the {string}")
     public void iNavigateToThe(String url) {
@@ -26,15 +27,18 @@ public class CartSteps {
 
     @When("I search for {string}")
     public void iSearchForMonitor(String item) {
+        searchItem=item;
        searchResultPage =homePage.searchItem(item);
+
     }
 
     @And("I open the First Monitor")
     public void iOpenTheFirstMonitor() throws IOException {
+        searchResultPage.validateResultPage(searchItem);
         productDetailsPage = searchResultPage.clickOnFirstMonitor();
     }
 
-    @And("I add the First Monitor to the Shopping Cart")
+    @And("I add the product to the Shopping Cart")
     public void iAddTheFirstMonitorToTheShoppingCart() {
         productDetailsPage.addTocart();
     }
@@ -44,14 +48,20 @@ public class CartSteps {
         shoppingCartPage = productDetailsPage.openCart();
     }
 
-    @Then("verify the price of the Product")
-    public void verifyThePriceOfTheProduct() {
-        shoppingCartPage.verifyProductPrice();
+
+    @And("I open the second Laptop")
+    public void iOpenTheSecondLaptop() throws IOException {
+        searchResultPage.validateResultPage(searchItem);
+        productDetailsPage = searchResultPage.clickOnSecondLaptop();
     }
 
-    @And("the subtotal should be accurate")
-    public void theSubtotalShouldBeAccurate() {
+    @And("the {string} subtotal should be accurate")
+    public void theSubtotalShouldBeAccurate(String productName) {
+        shoppingCartPage.verifySubTotalPrice(productName);
     }
 
-
+    @Then("verify the {string} price of the Product")
+    public void verifyThePriceOfTheProduct(String productName) {
+        shoppingCartPage.verifyProductPrice(productName);
+    }
 }
